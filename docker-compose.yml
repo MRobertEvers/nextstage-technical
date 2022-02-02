@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  app:
+    container_name: app
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://nextdevu:nextdevp@db:5432/postgres?schema=public
+    volumes:
+      - ./package.json:/usr/src/app/package.json
+      - ./components:/usr/src/app/components
+      - ./prisma:/usr/src/app/prisma
+      - ./pages:/usr/src/app/pages
+      - ./public:/usr/src/app/public
+      - ./styles:/usr/src/app/styles
+  db:
+    container_name: postgres
+    image: postgres:10-alpine
+    command: postgres -c 'max_connections=200'
+    restart: "always"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: none
+    environment:
+      POSTGRES_USER: nextdevu
+      POSTGRES_PASSWORD: nextdevp
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"

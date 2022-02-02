@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Opportunity {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  name        String
+  pipeline    Pipeline  @relation(fields: [pipelineId], references: [id])
+  pipelineId  String
+  stage       Stage     @relation(fields: [stageId], references: [id])
+  stageId     String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId String
+}
+
+model Stage {
+  id            String        @id @default(uuid())
+  name          String
+  createdAt     DateTime      @default(now())
+  opportunities Opportunity[]
+  pipeline      Pipeline      @relation(fields: [pipelineId], references: [id])
+  pipelineId    String
+  workspace     Workspace?    @relation(fields: [workspaceId], references: [id])
+  workspaceId   String?
+}
+
+model Pipeline {
+  id            String        @id @default(uuid())
+  name          String
+  createdAt     DateTime      @default(now())
+  opportunities Opportunity[]
+  stages        Stage[]
+  workspace     Workspace?    @relation(fields: [workspaceId], references: [id])
+  workspaceId   String?
+}
+
+model User {
+  id          String     @id @default(uuid())
+  firstName   String
+  lastName    String
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId String?
+}
+
+model Workspace {
+  id            String        @id @default(uuid())
+  name          String
+  opportunities Opportunity[]
+  pipelines     Pipeline[]
+  stages        Stage[]
+  users         User[]
+}
