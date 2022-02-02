@@ -33,7 +33,7 @@ When you start the application, we automatically seed some data found in *prisma
    
 
 # Testing
-
+Please write tests for your work. You do not need to have 100% test coverage, but we'd love to see how you approach testing your frontend and backend work. 
 
 
 
