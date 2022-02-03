@@ -1,61 +1,45 @@
-import type { NextPage } from "next";
-import { DragDropContext, OnDragEndResponder } from "react-beautiful-dnd";
-import { Stage } from "@types";
-import Column from "@components/Column";
-import { useEffect, useState } from "react";
-import { Pipeline } from "@prisma/client";
-
-const stages: Stage[] = [
-  {
-    id: "2f3548a6-00c2-4829-9faa-31b894d4a253",
-    name: "Column 1",
-    position: 1,
-  },
-  {
-    id: "4048410c-9bde-473c-990d-07ac227e66a3",
-    name: "Column 2",
-    position: 2,
-  },
-  {
-    id: "1e3b27c3-0fd7-4b2c-8c17-5d1a03565455",
-    name: "Column 3",
-    position: 3,
-  },
-];
+import { Pipeline } from '@prisma/client';
+import { fetchPipelines } from 'api/fetch-pipelines';
+import type { NextPage } from 'next';
+import { useEffect, useState } from 'react';
+import { PipelineWidget } from 'widgets/PipelineWidget';
 
 const Board: NextPage = () => {
-  const onDragEnd: OnDragEndResponder = (result) => {
-    // write the logic to update the state of the board
-  };
-  const [pipelinesData, setPipelinesData] = useState<Pipeline[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [pipelines, setPipelines] = useState<Pipeline[]>([]);
+	const [pipelinesStatus, setPipelinesStatus] = useState<
+		'initial' | 'loading' | 'error' | 'done'
+	>('initial');
 
-  // Get the pipeline data example
-  useEffect(() => {
-    setIsLoading(true);
-    fetch("api/pipelines")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Pipeline Data", data);
-        setPipelinesData(data);
-        setIsLoading(false);
-      });
-  }, []);
+	// Get the pipeline data example
+	useEffect(() => {
+		setPipelinesStatus('loading');
+		fetchPipelines()
+			.then((data) => {
+				console.log('Pipeline Data', data);
+				setPipelines(data);
+				setPipelinesStatus('done');
+			})
+			.catch((err) => {
+				setPipelinesStatus('error');
+			});
+	}, []);
 
-  return (
-    <>
-      <div>NextStage</div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div style={{ display: "flex", margin: "1em" }}>
-          {stages.map((stage) => (
-            <div key={stage.id} style={{ margin: "1em" }}>
-              <Column id={stage.id} title={stage.name} />
-            </div>
-          ))}
-        </div>
-      </DragDropContext>
-    </>
-  );
+	if (pipelinesStatus === 'error') {
+		return <>Something went wrong.</>;
+	}
+
+	if (pipelinesStatus !== 'done') {
+		return <>Please wait...</>;
+	}
+
+	return (
+		<>
+			<div>NextStage</div>
+			{pipelines.map((pipeline) => (
+				<PipelineWidget key={pipeline.id} pipeline={pipeline} />
+			))}
+		</>
+	);
 };
 
 export default Board;

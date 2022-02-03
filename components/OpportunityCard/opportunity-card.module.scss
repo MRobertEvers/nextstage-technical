@@ -1,0 +1,17 @@
+.opportunity {
+	display: block;
+	box-sizing: border-box;
+
+	// Margin doesn't play nice with dnd.
+	// margin: 2px;
+	padding: 1px;
+}
+
+.inner {
+	height: 60px;
+
+	border-radius: 3px;
+	border: 1px solid #eee;
+	background-color: white;
+	box-shadow: 0 0 2px 1px rgba(10, 10, 10, 0.15);
+}

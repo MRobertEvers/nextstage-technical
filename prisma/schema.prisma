@@ -14,6 +14,7 @@ model Opportunity {
   id          String    @id @default(uuid())
   createdAt   DateTime  @default(now())
   name        String
+  order       Int
   pipeline    Pipeline  @relation(fields: [pipelineId], references: [id])
   pipelineId  String
   stage       Stage     @relation(fields: [stageId], references: [id])
@@ -26,6 +27,7 @@ model Stage {
   id            String        @id @default(uuid())
   name          String
   createdAt     DateTime      @default(now())
+  order         Int
   opportunities Opportunity[]
   pipeline      Pipeline      @relation(fields: [pipelineId], references: [id])
   pipelineId    String

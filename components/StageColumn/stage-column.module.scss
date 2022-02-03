@@ -1,0 +1,21 @@
+.stage {
+	background-color: #fff;
+	margin: 0.25em 0;
+	padding: 1em;
+	border: none;
+	border-radius: 0.25em;
+	height: 720px;
+	border: 1px solid #eee;
+
+	width: 240px;
+}
+
+.list {
+	box-sizing: border-box;
+	margin: 2px;
+	border-top: 1px solid #eee;
+	height: 100%;
+	border: 1px solid #eee;
+	background-color: #bbb;
+	padding: 1px 0;
+}
