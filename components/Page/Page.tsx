@@ -19,7 +19,9 @@ export function Page(props: PageProps) {
 				className={styles['page-modal-root']}
 			/>
 
-			<ModalContext.Provider value={pageModalRootRef}>{children}</ModalContext.Provider>
+			<div className={styles['page-contents']}>
+				<ModalContext.Provider value={pageModalRootRef}>{children}</ModalContext.Provider>
+			</div>
 		</div>
 	);
 }

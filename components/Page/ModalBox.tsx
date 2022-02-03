@@ -25,7 +25,7 @@ export function ModalBox(props: ModalBoxProps) {
 		return () => {
 			window.removeEventListener('click', ev);
 		};
-	}, [ref]);
+	}, [ref, onClose]);
 
 	return (
 		<div

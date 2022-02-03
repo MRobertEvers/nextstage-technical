@@ -7,10 +7,22 @@ interface NewOpportunityModalWidgetProps {
 	visible: boolean;
 	onClose: (result: 'close' | 'created' | 'error') => void;
 	pipeline: Pipeline;
+
+	NewOpportunityModalComponent?: React.ComponentType<{
+		pipeline: Pipeline;
+		visible: boolean;
+		onClose: () => void;
+		onCreateOpportunity: (name: string) => void;
+	}>;
 }
 
 export function NewOpportunityModalWidget(props: NewOpportunityModalWidgetProps) {
-	const { visible, onClose, pipeline } = props;
+	const {
+		visible,
+		onClose,
+		pipeline,
+		NewOpportunityModalComponent = NewOpportunityModal
+	} = props;
 
 	const api = useContext(APIContext);
 
@@ -26,7 +38,7 @@ export function NewOpportunityModalWidget(props: NewOpportunityModalWidgetProps)
 	}, []);
 
 	return (
-		<NewOpportunityModal
+		<NewOpportunityModalComponent
 			pipeline={pipeline}
 			onClose={() => onClose('close')}
 			visible={visible}

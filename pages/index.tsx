@@ -46,7 +46,7 @@ const Board: NextPage = () => {
 	return (
 		<Page>
 			<div style={{ display: 'flex' }}>
-				<div>NextStage</div>
+				<h1>NextStage</h1>
 			</div>
 
 			{pipelines.map((pipeline) => (

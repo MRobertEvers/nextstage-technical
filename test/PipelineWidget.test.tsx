@@ -5,7 +5,7 @@ import {
 } from '@components/PipelineBoard/DndPipelineBoard';
 import { getStageColumnListHtmlTestId } from '@components/StageColumn/StageColumn';
 import '@testing-library/jest-dom';
-import { render, screen, waitForElementToBeRemoved, within } from '@testing-library/react';
+import { act, render, screen, waitForElementToBeRemoved, within } from '@testing-library/react';
 import { PipelineWithOpportunities } from '@types';
 import { DEFAULT_API_CALLS } from 'api/api';
 import { APIContext } from 'api/APIContext';
@@ -18,7 +18,7 @@ import { TEST_PIPELINE } from './pipeline-widget.test-data';
 jest.mock('api/api');
 
 describe('PipelineWidget', () => {
-	test('Sanity check', () => {
+	test('Sanity check', async () => {
 		const api = jest.mocked(DEFAULT_API_CALLS);
 
 		api.fetchPipelineWithOpportunities.mockResolvedValueOnce(TEST_PIPELINE);
@@ -28,6 +28,8 @@ describe('PipelineWidget', () => {
 				<PipelineWidget pipeline={TEST_PIPELINE} />
 			</APIContext.Provider>
 		);
+
+		await waitForElementToBeRemoved(screen.getByTestId('loading'));
 
 		expect(api.fetchPipelineWithOpportunities).toBeCalledWith({
 			pipelineId: TEST_PIPELINE.id
@@ -114,15 +116,17 @@ describe('PipelineWidget', () => {
 
 		api.fetchMoveOpportunities.mockResolvedValueOnce();
 
-		onSwapInject(pipeline, {
-			destination: {
-				stageId: firstStage.id,
-				position: 1
-			},
-			source: {
-				stageId: firstStage.id,
-				position: 0
-			}
+		act(() => {
+			onSwapInject(pipeline, {
+				destination: {
+					stageId: firstStage.id,
+					position: 1
+				},
+				source: {
+					stageId: firstStage.id,
+					position: 0
+				}
+			});
 		});
 
 		expect(api.fetchMoveOpportunities).toBeCalledWith(
@@ -175,15 +179,17 @@ describe('PipelineWidget', () => {
 
 		api.fetchMoveOpportunities.mockResolvedValueOnce();
 
-		onSwapInject(pipeline, {
-			destination: {
-				stageId: secondStage.id,
-				position: 1
-			},
-			source: {
-				stageId: firstStage.id,
-				position: 0
-			}
+		act(() => {
+			onSwapInject(pipeline, {
+				destination: {
+					stageId: secondStage.id,
+					position: 1
+				},
+				source: {
+					stageId: firstStage.id,
+					position: 0
+				}
+			});
 		});
 
 		expect(api.fetchMoveOpportunities).toBeCalledWith(
