@@ -1,7 +1,7 @@
 import { OpportunityCard } from '@components/OpportunityCard/OpportunityCard';
 import { Opportunity } from '@prisma/client';
 import { StageWithOpportunities } from '@types';
-import { DetailedHTMLProps, HTMLAttributes, ReactElement } from 'react';
+import { DetailedHTMLProps, HTMLAttributes, ReactElement, useEffect, useMemo } from 'react';
 import { popForwardClassName } from 'utils/pop-forward-class-name';
 
 import styles from './stage-column.module.scss';
@@ -29,9 +29,6 @@ export function StageColumn(props: StageColumnProps) {
 
 	const { forward, className } = popForwardClassName(forwardListProps || {}, styles['list']);
 
-	// TODO: This should not be here. This should be done before the opportunity list enters
-	// the ecosystem. Use a type like "SortedOpportunityList"
-	stage.opportunities.sort((a, b) => a.order - b.order);
 	return (
 		<div className={styles['stage']} style={{ margin: '1em' }}>
 			{stage.name}

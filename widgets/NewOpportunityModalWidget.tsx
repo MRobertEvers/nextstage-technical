@@ -26,16 +26,19 @@ export function NewOpportunityModalWidget(props: NewOpportunityModalWidgetProps)
 
 	const api = useContext(APIContext);
 
-	const onCreateOpportunity = useCallback((name: string) => {
-		api.fetchCreateOpportunity({
-			pipelineId: pipeline.id,
-			opportunityName: name
-		})
-			.then(() => {
-				onClose('created');
+	const onCreateOpportunity = useCallback(
+		(name: string) => {
+			api.fetchCreateOpportunity({
+				pipelineId: pipeline.id,
+				opportunityName: name
 			})
-			.catch(() => onClose('error'));
-	}, []);
+				.then(() => {
+					onClose('created');
+				})
+				.catch(() => onClose('error'));
+		},
+		[onClose, pipeline, api]
+	);
 
 	return (
 		<NewOpportunityModalComponent

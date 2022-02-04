@@ -78,6 +78,7 @@ export function PipelineWidget(props: PipelineWidgetProps) {
 
 	useEffect(() => {
 		fetchPipelineData();
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
 	}, []);
 
 	const [isModalVisible, setIsModalVisible] = useState(false);
