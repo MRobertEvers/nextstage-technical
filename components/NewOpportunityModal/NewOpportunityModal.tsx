@@ -22,7 +22,13 @@ export function NewOpportunityModal(props: NewOpportunityModalProps) {
 			<ModalBox visible={visible} onClose={onClose}>
 				<div className={styles['container']}>
 					<h2>Create a new Opportunity for {pipeline.name}</h2>
-					<form onSubmit={() => onCreateOpportunity(opportunityName)}>
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							onCreateOpportunity(opportunityName);
+							setOpportunityName('');
+						}}
+					>
 						<input
 							value={opportunityName}
 							placeholder="New Opportunity"

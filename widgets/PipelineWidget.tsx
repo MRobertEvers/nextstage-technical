@@ -83,6 +83,7 @@ export function PipelineWidget(props: PipelineWidgetProps) {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	if (state.status !== 'done' && state.status !== 'refreshing') {
+		console.log('Loading');
 		return <div data-testid="loading">Please wait...</div>;
 	}
 
