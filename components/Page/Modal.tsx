@@ -10,9 +10,9 @@ export function Modal(props: ModalProps) {
 	const { children } = props;
 
 	const portal = useContext(ModalContext);
-	if (!portal.current) {
+	if (!portal) {
 		return <Fragment />;
 	}
 
-	return ReactDOM.createPortal(children, portal.current);
+	return ReactDOM.createPortal(children, portal);
 }

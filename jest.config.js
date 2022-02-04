@@ -16,7 +16,8 @@ const customJestConfig = {
 	testEnvironment: 'jest-environment-jsdom',
 	moduleNameMapper: {
 		'^@components/(.*)$': '<rootDir>/components/$1'
-	}
+	},
+	coverageReporters: ['html-spa']
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
