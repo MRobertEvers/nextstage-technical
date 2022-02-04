@@ -16,6 +16,7 @@ services:
             - ./components:/usr/src/app/components
             - ./widgets:/usr/src/app/widgets
             - ./api:/usr/src/app/api
+            - ./test:/usr/src/app/test
             - ./server:/usr/src/app/server
             - ./assets:/usr/src/app/assets
             - ./prisma:/usr/src/app/prisma
