@@ -1,7 +1,7 @@
 import { Modal } from '@components/Page/Modal';
 import { ModalBox } from '@components/Page/ModalBox';
 import { Pipeline } from '@prisma/client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styles from './new-opportunity-modal.module.css';
 
@@ -17,6 +17,14 @@ export function NewOpportunityModal(props: NewOpportunityModalProps) {
 
 	const [opportunityName, setOpportunityName] = useState<string>('');
 
+	const inputRef = useRef<HTMLInputElement>(null);
+	useEffect(() => {
+		if (visible === true) {
+			inputRef.current?.focus();
+			setOpportunityName('');
+		}
+	}, [visible]);
+
 	return (
 		<Modal>
 			<ModalBox visible={visible} onClose={onClose}>
@@ -26,10 +34,14 @@ export function NewOpportunityModal(props: NewOpportunityModalProps) {
 						onSubmit={(e) => {
 							e.preventDefault();
 							onCreateOpportunity(opportunityName);
-							setOpportunityName('');
+
+							// I don't want the opportunity name to change while transitioning out
+							// so just reset it when it transitions in.
+							// setOpportunityName('');
 						}}
 					>
 						<input
+							ref={inputRef}
 							value={opportunityName}
 							placeholder="New Opportunity"
 							onChange={(e) => setOpportunityName(e.target.value)}
