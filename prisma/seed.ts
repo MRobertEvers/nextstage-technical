@@ -52,7 +52,7 @@ const main = async () => {
 				pipelineId: newPipeline.id,
 				stageId: newStages[index % newStages.length].id,
 				workspaceId: newWorkspace.id,
-				order: index
+				order: Math.floor(index / newStages.length)
 			};
 			// }
 		})
