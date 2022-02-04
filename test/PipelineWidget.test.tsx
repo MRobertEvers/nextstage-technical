@@ -5,7 +5,15 @@ import {
 } from '@components/PipelineBoard/DndPipelineBoard';
 import { getStageColumnListHtmlTestId } from '@components/StageColumn/StageColumn';
 import '@testing-library/jest-dom';
-import { act, render, screen, waitForElementToBeRemoved, within } from '@testing-library/react';
+import {
+	act,
+	findByTestId,
+	render,
+	screen,
+	waitFor,
+	waitForElementToBeRemoved,
+	within
+} from '@testing-library/react';
 import { PipelineWithOpportunities } from '@types';
 import { DEFAULT_API_CALLS } from 'api/api';
 import { APIContext } from 'api/APIContext';
@@ -23,13 +31,13 @@ describe('PipelineWidget', () => {
 
 		api.fetchPipelineWithOpportunities.mockResolvedValueOnce(TEST_PIPELINE);
 
-		render(
+		const { container } = render(
 			<APIContext.Provider value={api}>
 				<PipelineWidget pipeline={TEST_PIPELINE} />
 			</APIContext.Provider>
 		);
 
-		await waitForElementToBeRemoved(screen.getByTestId('loading'));
+		await findByTestId(container, TEST_PIPELINE.id);
 
 		expect(api.fetchPipelineWithOpportunities).toBeCalledWith({
 			pipelineId: TEST_PIPELINE.id
@@ -41,13 +49,13 @@ describe('PipelineWidget', () => {
 
 		api.fetchPipelineWithOpportunities.mockResolvedValueOnce(TEST_PIPELINE);
 
-		render(
+		const { container } = render(
 			<APIContext.Provider value={api}>
 				<PipelineWidget pipeline={TEST_PIPELINE} />
 			</APIContext.Provider>
 		);
 
-		await waitForElementToBeRemoved(screen.getByTestId('loading'));
+		await findByTestId(container, TEST_PIPELINE.id);
 
 		// TODO: Should probably write out each opp
 		for (const stage of TEST_PIPELINE.stages) {
@@ -103,12 +111,12 @@ describe('PipelineWidget', () => {
 			return <DndPipelineBoard {...props} />;
 		}
 
-		render(
+		const { container } = render(
 			<APIContext.Provider value={api}>
 				<PipelineWidget pipeline={pipeline} BoardComponent={PipelineBoardWrapper} />
 			</APIContext.Provider>
 		);
-		await waitForElementToBeRemoved(screen.getByTestId('loading'));
+		await findByTestId(container, TEST_PIPELINE.id);
 
 		const firstStage = pipeline.stages[0];
 		const firstOpportunity = firstStage.opportunities[0];
@@ -164,12 +172,12 @@ describe('PipelineWidget', () => {
 			return <DndPipelineBoard {...props} />;
 		}
 
-		render(
+		const { container } = render(
 			<APIContext.Provider value={api}>
 				<PipelineWidget pipeline={pipeline} BoardComponent={PipelineBoardWrapper} />
 			</APIContext.Provider>
 		);
-		await waitForElementToBeRemoved(screen.getByTestId('loading'));
+		await findByTestId(container, TEST_PIPELINE.id);
 
 		const firstStage = pipeline.stages[0];
 		const secondStage = pipeline.stages[1];

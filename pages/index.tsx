@@ -1,12 +1,8 @@
-import { NewOpportunityModal } from '@components/NewOpportunityModal/NewOpportunityModal';
-import { Modal } from '@components/Page/Modal';
-import { ModalBox } from '@components/Page/ModalBox';
 import { Page } from '@components/Page/Page';
 import { Pipeline } from '@prisma/client';
 import { fetchPipelines } from 'api/fetch-pipelines';
 import type { NextPage } from 'next';
-import { Fragment, useEffect, useState } from 'react';
-import { NewOpportunityModalWidget } from 'widgets/NewOpportunityModalWidget';
+import { useEffect, useState } from 'react';
 import { PipelineWidget } from 'widgets/PipelineWidget';
 
 const Board: NextPage = () => {
@@ -33,8 +29,6 @@ const Board: NextPage = () => {
 		fetchIndexData();
 	}, []);
 
-	const [isModalVisible, setIsModalVisible] = useState(false);
-
 	if (pipelinesStatus === 'error') {
 		return <>Something went wrong.</>;
 	}
@@ -46,32 +40,11 @@ const Board: NextPage = () => {
 	return (
 		<Page>
 			<div style={{ display: 'flex' }}>
-				<h1>NextStage</h1>
+				<h1>NextStage </h1>
 			</div>
 
 			{pipelines.map((pipeline) => (
-				<div key={pipeline.id}>
-					<NewOpportunityModalWidget
-						onClose={(result) => {
-							setIsModalVisible(false);
-							if (result === 'created') {
-								fetchIndexData();
-							}
-						}}
-						visible={isModalVisible}
-						pipeline={pipeline}
-					/>
-					<h2>{pipeline.name}</h2>
-					<button
-						onClick={(e) => {
-							e.stopPropagation();
-							setIsModalVisible(!isModalVisible);
-						}}
-					>
-						Add Opportunity
-					</button>
-					<PipelineWidget pipeline={pipeline} />
-				</div>
+				<PipelineWidget key={pipeline.id} pipeline={pipeline} />
 			))}
 		</Page>
 	);
