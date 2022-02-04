@@ -7,6 +7,8 @@ import { useContext, useEffect, useState } from 'react';
 import { NewOpportunityModalWidget } from './NewOpportunityModalWidget';
 import { StageSwapPosition, swapStageOpportunity } from './swap-stage-opportunity';
 
+import styles from './pipeline-widget.module.css';
+
 function mapStageToMoveArgs(opp: Opportunity, index: number): MovedOpportunityPosition {
 	return {
 		opportunityId: opp.id,
@@ -108,7 +110,7 @@ export function PipelineWidget(props: PipelineWidgetProps) {
 	};
 
 	return (
-		<div data-testid={pipeline.id}>
+		<div className={styles['min-height-board']} data-testid={pipeline.id}>
 			<NewOpportunityModalWidget
 				onClose={(result) => {
 					setIsModalVisible(false);
@@ -120,15 +122,17 @@ export function PipelineWidget(props: PipelineWidgetProps) {
 				pipeline={pipeline}
 			/>
 			<h2>{pipeline.name}</h2>
-			<button
-				onClick={(e) => {
-					e.stopPropagation();
-					setIsModalVisible(!isModalVisible);
-				}}
-			>
-				Add Opportunity
-			</button>
-			<BoardComponent pipeline={state.pipeline} onSwap={onSwap} />;
+			<div>
+				<button
+					onClick={(e) => {
+						e.stopPropagation();
+						setIsModalVisible(!isModalVisible);
+					}}
+				>
+					Add Opportunity
+				</button>
+			</div>
+			<BoardComponent pipeline={state.pipeline} onSwap={onSwap} />
 		</div>
 	);
 }

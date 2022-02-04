@@ -30,17 +30,19 @@ export function StageColumn(props: StageColumnProps) {
 	const { forward, className } = popForwardClassName(forwardListProps || {}, styles['list']);
 
 	return (
-		<div className={styles['stage']} style={{ margin: '1em' }}>
+		<div className={styles['stage']}>
 			{stage.name}
-			<div
-				className={className}
-				{...forward}
-				data-testid={getStageColumnListHtmlTestId(stage.id)}
-			>
-				{stage.opportunities.map((opp, ind) => (
-					<OpportunityComponent key={opp.id} opportunity={opp} position={ind} />
-				))}
-				{listPlaceholder}
+			<div className={styles['list-wrap']}>
+				<div
+					className={className}
+					{...forward}
+					data-testid={getStageColumnListHtmlTestId(stage.id)}
+				>
+					{stage.opportunities.map((opp, ind) => (
+						<OpportunityComponent key={opp.id} opportunity={opp} position={ind} />
+					))}
+					{listPlaceholder}
+				</div>
 			</div>
 		</div>
 	);
